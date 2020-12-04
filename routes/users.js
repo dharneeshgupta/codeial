@@ -8,6 +8,8 @@ router.get('/profile',userController.profile);
 router.get('/sign-up',userController.signUp);
 router.get('/sign-in',userController.signIn);
 router.post('/create',userController.create);
+router.post('/create-session',userController.createSession);
+router.get('/signout',userController.signOut);
 console.log("user loaded");
  
 
