@@ -4,6 +4,12 @@ const LocalStrategy=require('passport-local').Strategy;
 const User=require('../models/user.js');
 // const { pass } = require('./mongoose');
 //authentication using password.
+
+//we need to tell passport to use this local staregy
+
+//done-- is a call back function inbuilt to passport
+//done callback takes 2 arguments-- (1. error occured or not 2. authenitcation succ or not)
+
 passport.use(new LocalStrategy({
     usernameField:'email'
 },
@@ -33,6 +39,8 @@ User.findOne({email:email},(err,user)=>{
 
 //serialisation the user to decide which key is to be kept in the cookie
 passport.serializeUser((user,done)=>{
+    console.log("Mere user ki info",user);
+    //this automatically encripts the user.id using a library express -session 
     done(null,user.id);
 });
 

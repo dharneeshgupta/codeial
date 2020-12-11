@@ -23,6 +23,11 @@ module.exports.signUp=(req,res)=>{
 //render the siign up page
 
 module.exports.signIn=(req,res)=>{
+if(req.isAuthenticated())
+{
+    return res.redirect('/users/profile');
+}
+
     return res.render('user_sign_in',{
         title:"Codeila|SignIn"
     });
@@ -60,8 +65,13 @@ User.findOne({email:req.body.email},(err,user)=>{
 //sign in & create session fo the user
 module.exports.createSession=(req,res)=>{
 
-    return res.redirect('/');
+    return res.redirect('/users/profile');
 }
 
+
+module.exports.destroySession=(req,res)=>{
+    req.logout();
+    return res.redirect('/users/sign-in');
+}
 
 

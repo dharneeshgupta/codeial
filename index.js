@@ -2,10 +2,14 @@ const express=require('express');
 const path=require('path');
 const cookieParser=require('cookie-parser');
 
-//used for session cookie
+//used for session cookie(takes cookie and encrypts it)
 const session=require('express-session');
+//we need to require both passport & passport-local
 const passport=require('passport');
 const passportLocal=require('./config/passport-local-strategy');
+
+//for storing cookie in db
+const MongoStore=require('connect-mongo')(session);
 
 const app=express();
 const expressLayouts=require('express-ejs-layouts');
@@ -27,7 +31,11 @@ app.set('views',path.join(__dirname,'./views'));
 
 
 
-//app.use ->using expression session
+//app.use ->using expression session(that helps in encrypting cookie)
+//saveunitialized when user is not established not data is required to cookie
+//simlarly idently established we dont require to resave
+
+//mongo store is used to store cookie in db
 app.use(session({
 name:'codeial',
 //todo change the secret before deployment in prod mode
@@ -37,10 +45,20 @@ resave:false,
 cookie:{
    maxAge:(1000*60*100) 
 }
+,store:new MongoStore({
+    mongooseConnection:db,
+    autoRemove:'disabled'
+},
+(err)=>{
+    console.log(err || "connect-mongo-db-setup-ok");
+}
+)
 }));
 
+//need to tell app to use passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(passport.setAuthenticatedUser);
 
 app.use('/',require('./routes/index.js'));
