@@ -3,19 +3,20 @@
 <head>
     <title><%=title%></title>
     <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    
     <%- style %>
 </head>
 <body>
-    <!-- <header>
-        Page header
-    </header> -->
-    <%- include('_header.ejs'); %>
-    <!-- <h1>Codeial for home/<%=title%></h1> -->
-    <%- body %>
     
-    <!-- <footer>
-        Page Footer
-    </footer> -->
+    <%- include('_header.ejs'); %>
+    
+    <main id="layout-main">
+        <%- body %>
+    
+    </main>
+   
     <%- include('_footer.ejs'); %>
     <%- script %>
 </body>

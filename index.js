@@ -10,6 +10,7 @@ const passportLocal=require('./config/passport-local-strategy');
 
 //for storing cookie in db
 const MongoStore=require('connect-mongo')(session);
+const sassMiddleware =require('node-sass-middleware');
 
 const app=express();
 const expressLayouts=require('express-ejs-layouts');
@@ -20,6 +21,18 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 app.use(express.static('./assets'));
 app.use(expressLayouts);
+
+
+
+app.use(sassMiddleware({
+    src:'./assets/scss',
+    dest:'./assets/css',
+    //show eero if error in converting to tprefix
+    debug:true,
+    //i want every thing to be in multiple line thats why we use outputstyle extended
+    outputStyle:'extended',
+    prefix:'/css'
+    }));
 
 //style & scripts from sub pages into the layout
 app.set('layout extractStyles',true);
