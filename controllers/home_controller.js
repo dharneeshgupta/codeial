@@ -15,7 +15,7 @@ module.exports.home= function(req,res){
     // });
 
     Post.find({}).populate('user').exec((err,posts)=>{
-        console.log(posts);
+        // console.log(posts);
         return   res.render('home',{
             title:"Home",
             posts: posts

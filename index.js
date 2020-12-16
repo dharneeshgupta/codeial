@@ -1,5 +1,6 @@
 const express=require('express');
 const path=require('path');
+//for reading & writing into cookies (ie cookie section when you do ctrl shft I)
 const cookieParser=require('cookie-parser');
 
 //used for session cookie(takes cookie and encrypts it)
@@ -10,6 +11,9 @@ const passportLocal=require('./config/passport-local-strategy');
 
 //for storing cookie in db
 const MongoStore=require('connect-mongo')(session);
+
+//SASS required for writing CSS code neat & in efficent manner
+//Files are compiled to CSS at run time however we change it precompile in production
 const sassMiddleware =require('node-sass-middleware');
 
 const app=express();
@@ -45,7 +49,7 @@ app.set('views',path.join(__dirname,'./views'));
 
 
 //app.use ->using expression session(that helps in encrypting cookie)
-//saveunitialized when user is not established not data is required to cookie
+//saveunitialized when user is not established no data is required to be stored in the cookie
 //simlarly idently established we dont require to resave
 
 //mongo store is used to store cookie in db
@@ -78,7 +82,7 @@ app.use('/',require('./routes/index.js'));
 app.listen(8080,(err)=>{
 
     if(err)
-    {
+    { 
         console.log("error in running up the server",err);
         return;
     }
