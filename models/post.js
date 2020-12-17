@@ -9,7 +9,11 @@ const postSchema=new mongoose.Schema({
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'SabhiUser'
-    }
+    },
+    comments:[{
+        type:mongoose.Schema.ObjectId,
+        ref:'Comment'
+    }]
 },{
     timestamps:true
 });
