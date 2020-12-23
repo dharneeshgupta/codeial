@@ -1,11 +1,30 @@
+const { user } = require('../config/mongoose');
 const User=require('../models/user');
 
 module.exports.profile=(req,res)=>{
 
     //res.end('<h1>User profile</h1>');
-    return res.render('user_profile',{
-        title:"profile"
+    User.findById(req.params.id,(err,user)=>{
+        return res.render('user_profile',{
+            title:"profile",
+            profile_user:user
+        });
     });
+
+    
+}
+
+module.exports.update=(req,res)=>{
+    if(req.user.id==req.params.id){
+        User.findByIdAndUpdate(req.params.id,req.body,(err,user)=>{
+            return res.redirect('back');
+        });
+    }
+    else
+    {
+        return res.status(401).send('Unathorized');
+    }
+
 }
 
 //render the sign in page
@@ -65,7 +84,9 @@ User.findOne({email:req.body.email},(err,user)=>{
 //sign in & create session fo the user
 module.exports.createSession=(req,res)=>{
 
-    return res.redirect('/users/profile');
+
+    console.log("abe ye create session dekh ",req.params);
+    return res.redirect('/');
 }
 
 

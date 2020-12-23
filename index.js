@@ -78,6 +78,8 @@ app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
 
+
+//here the my present ie root index file is requesting the main routes/index 
 app.use('/',require('./routes/index.js'));
 app.listen(8080,(err)=>{
 

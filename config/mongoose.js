@@ -1,7 +1,8 @@
 const mongoose=require('mongoose');
 
 
-// codeial_developemnt-> is a database
+// codeial_developemnt-> is a database which u can see in robo 3t
+
 mongoose.connect('mongodb://localhost/codeial_development');
 
 const db=mongoose.connection;
