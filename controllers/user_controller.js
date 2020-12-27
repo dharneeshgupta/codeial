@@ -84,14 +84,16 @@ User.findOne({email:req.body.email},(err,user)=>{
 //sign in & create session fo the user
 module.exports.createSession=(req,res)=>{
 
-
+    req.flash('success','Logged In Succefully');
     console.log("abe ye create session dekh ",req.params);
     return res.redirect('/');
 }
 
 
 module.exports.destroySession=(req,res)=>{
+
     req.logout();
+    req.flash('success','You have logged out!');
     return res.redirect('/users/sign-in');
 }
 

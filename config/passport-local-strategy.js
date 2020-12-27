@@ -11,18 +11,20 @@ const User=require('../models/user.js');
 //done callback takes 2 arguments-- (1. error occured or not 2. authenitcation succ or not)
 
 passport.use(new LocalStrategy({
-    usernameField:'email'
+    usernameField:'email',
+    passReqToCallback:true
 },
-(email,password,done)=>{
+(req,email,password,done)=>{
 //find a user & establish the identity
 User.findOne({email:email},(err,user)=>{
     if(err)
-    {
+    {   req.flash('error',err);
         console.log("erro in finding user->passport");
         return done(err);
     }
     if(!user||user.password!=password)
-    {
+    {   
+        req.flash('error','Invalid username or password');
         console.log("Invalid username password");
         return done(null,false);
     }

@@ -15,7 +15,8 @@ const MongoStore=require('connect-mongo')(session);
 //SASS required for writing CSS code neat & in efficent manner
 //Files are compiled to CSS at run time however we change it precompile in production
 const sassMiddleware =require('node-sass-middleware');
-
+const flash=require('connect-flash');
+const customMware=require('./config/middleware');
 const app=express();
 const expressLayouts=require('express-ejs-layouts');
 const db=require('./config/mongoose.js');
@@ -77,8 +78,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+//this flash message thing using sesssion cookie thats why we have placed it below
 
+app.use(flash());
 
+app.use(customMware.setFlash);
 //here the my present ie root index file is requesting the main routes/index 
 app.use('/',require('./routes/index.js'));
 app.listen(8080,(err)=>{
