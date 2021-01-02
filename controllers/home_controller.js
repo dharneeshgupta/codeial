@@ -28,7 +28,7 @@ module.exports.home= async function(req,res){
     // 2 - Promises
     // 3- async + await
     try{
-        let posts=await Post.find({})
+        let posts=await Post.find({}).sort('-createdAt')
         .populate('user')
         .populate({
             path:'comments',
