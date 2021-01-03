@@ -1,5 +1,7 @@
 const { user } = require('../config/mongoose');
 const User=require('../models/user');
+const fs=require('fs');
+const path=require('path');
 
 module.exports.profile=(req,res)=>{
 
@@ -14,15 +16,52 @@ module.exports.profile=(req,res)=>{
     
 }
 
-module.exports.update=(req,res)=>{
-    if(req.user.id==req.params.id){
-        User.findByIdAndUpdate(req.params.id,req.body,(err,user)=>{
-            return res.redirect('back');
-        });
-    }
-    else
+module.exports.update=async (req,res)=>{
+    // if(req.user.id==req.params.id){
+    //     User.findByIdAndUpdate(req.params.id,req.body,(err,user)=>{
+    //         return res.redirect('back');
+    //     });
+    // }
+    // else
+    // {
+    //     return res.status(401).send('Unathorized');
+    // }
+
+    if(req.user.id=req.params.id)
     {
-        return res.status(401).send('Unathorized');
+        try{
+            let user=await User.findById(req.params.id);
+            User.uploadedAvatar(req,res,(err)=>{
+                if(err){
+                    console.log("****Multerr Error:",err);
+
+                }
+                // console.log(req.file);
+                user.name=req.body.name;
+                user.email=req.body.email;
+                if(req.file){
+                        // if(user.avatar)
+                        // {
+                        fs.unlinkSync(path.join(__dirname,'..',user.avatar));
+                        //}
+                    
+                    //this is saving the path of uplaoded file into avatr field into the user
+                    user.avatar=User.avatarPath+'/'+req.file.filename;
+
+                }
+                user.save();
+                return res.redirect('back');
+            });
+        }
+        catch(err)
+        {
+            req.flash('error',err);
+            return res.redirect('back');
+        }
+    }
+    else{
+        req.flash('error','Unathirized');
+        return res.status(401).send('Unauthorized');
     }
 
 }
